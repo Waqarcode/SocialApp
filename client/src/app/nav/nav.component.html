@@ -1,20 +1,24 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="#">Social App</a>
-    <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async ">
-      <li class="nav-item">
-        <a class="nav-link" ref="#">Matches</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" ref="#">Lists</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" ref="#">Messages</a>
-      </li>
+    <a class="navbar-brand" routerLink="/" routerLinkActive="active">Social App</a>
+    <!-- <ul class="navbar-nav mr-auto" > -->
+    <ul class="navbar-nav mr-auto">
+      <ng-container *ngIf="accountService.currentUser$ | async ">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/memberslist" routerLinkActive="active">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
+          </li>
+      </ng-container>
+      
     </ul>
 
-    <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
-      <a class="dropdown-toggle text-light" dropdownToggle>Welcome User</a>
+    <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+      <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.userName | titlecase}} </a>
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item">Edit Profile</a>
         <div class="divider dropdown-divider"></div>
@@ -39,7 +43,7 @@
         class="form-control mr-sm-2"
         type="password"
         placeholder="Password"/>
-      <button class="btn btn-outline-success my-2 my-sm-0">Login</button>
+      <button class="btn btn-success my-2 my-sm-0">Login</button>
     </form>
   </div>
 </nav>
