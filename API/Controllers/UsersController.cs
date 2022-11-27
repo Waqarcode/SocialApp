@@ -3,33 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Dtos;
 using API.Entities;
+using API.Repository;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _dbContext;
-        public UsersController(DataContext dbContext)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        public UsersController(IUserRepository userRepository,IMapper mapper)
         {
-            _dbContext = dbContext;
-
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
-        [AllowAnonymous]
+        
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<AppUser>> Find(int id)
+        // {
+        //     return await _userRepository.GetUserByIdAsync(id);
+        // }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserOutputDto>> GetUserByName(string userName)
+        {
+            //var query = await _userRepository.GetUserByUserNameAsync(userName);
+            //return  _mapper.Map<UserOutputDto>(query);
+            
+            return await _userRepository.GetUserByUserNameOptimizWayAsync(userName);
+        }
+        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserOutputDto>>> GetUsers()
         {
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> Find(int id)
-        {
-            return await _dbContext.Users.FindAsync(id);
+            // var query = await _userRepository.GetUserAsync();
+            // return Ok(_mapper.Map<IEnumerable<UserOutputDto>>(query));
+            
+            return Ok(await _userRepository.GetUserOptimizWayAsync());
         }
     }
 }
