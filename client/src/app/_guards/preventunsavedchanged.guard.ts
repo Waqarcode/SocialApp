@@ -9,7 +9,9 @@ import { MemberEditComponent } from '../members/member-edit/member-edit.componen
 export class PreventunsavedchangedGuard implements CanDeactivate<unknown> {
   canDeactivate( component: MemberEditComponent):  boolean  {
     if (component.editForm.dirty) {
+
       return confirm("Are you sure you want to leave. Some changes are unsaved.")
+    
     }
     return true;
   }
