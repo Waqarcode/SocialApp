@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr'; 
 
 @Component({
   selector: 'app-nav',
@@ -13,8 +13,7 @@ export class NavComponent implements OnInit {
 
   vm: any = {};
   //Creating accountService public to access in template file
-  constructor(public accountService: AccountService, private router: Router, 
-    private toastrService: ToastrService) { }
+  constructor(public accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
   }
