@@ -54,7 +54,7 @@ namespace API.Repository
             
             return await _context.Users 
                     .Include(e=> e.Photos) //Eager Loading With Out Refernce Problem Bcu We are using AutoMapper
-                    .SingleOrDefaultAsync(x => x.UserName == userName);
+                    .FirstOrDefaultAsync(x => x.UserName == userName);
             
             //return await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName); Photo null
         }

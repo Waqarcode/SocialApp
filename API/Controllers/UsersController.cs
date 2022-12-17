@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Data;
+using System.Security.Claims;
 using API.Dtos;
-using API.Entities;
 using API.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -46,6 +40,19 @@ namespace API.Controllers
             // return Ok(_mapper.Map<IEnumerable<UserOutputDto>>(query));
             
             return Ok(await _userRepository.GetUserOptimizWayAsync());
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> updateUser(UserUpdateDto input){
+            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUserNameAsync(userName);
+
+            _mapper.Map(input, user);
+            _userRepository.Update(user);
+            
+            if (await _userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Something went Wrong");
         }
     }
 }
